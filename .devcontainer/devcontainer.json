@@ -1,0 +1,21 @@
+{
+	"name": "JavaScript Development Container",
+	"dockerFile": "Dockerfile",
+	"remoteUser": "node",
+	"mounts": [
+		"source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"ms-azuretools.vscode-docker"
+			],
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash"
+			}
+		}
+	},
+	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && npm install"
+}
