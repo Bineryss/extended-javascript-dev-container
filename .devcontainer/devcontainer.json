@@ -3,8 +3,12 @@
 	"dockerFile": "Dockerfile",
 	"remoteUser": "node",
 	"mounts": [
-		"source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+		"source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+		"source=pnpm-cache,target=/home/node/.cache/pnpm,type=volume"
 	],
+	"containerEnv": {
+		"PNPM_HOME": "/home/node/.cache/pnpm"
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -17,5 +21,5 @@
 			}
 		}
 	},
-	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && npm install"
+	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && sudo chown node:node /home/node/.cache/pnpm && pnpm config set store-dir /home/node/.cache/pnpm && pnpm install"
 }
