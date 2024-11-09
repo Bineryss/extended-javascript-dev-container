@@ -21,5 +21,5 @@
 			}
 		}
 	},
-	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && sudo chown node:node /home/node/.cache/pnpm && pnpm config set store-dir /home/node/.cache/pnpm && pnpm install"
+	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && sudo chown node:node /home/node/.cache && pnpm config set store-dir /home/node/.cache/pnpm && pnpm install"
 }
