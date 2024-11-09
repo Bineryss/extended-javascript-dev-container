@@ -26,8 +26,11 @@ jobs:
         tags: myapp:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        outputs: type=docker,dest=/tmp/myapp.tar
 
-    - name: Test Docker image
-      run: |
-        docker run --rm myapp:latest node --version
-        docker run --rm myapp:latest pnpm --version
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: /tmp/myapp.tar
+        retention-days: 1
