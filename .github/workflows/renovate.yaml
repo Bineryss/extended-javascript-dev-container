@@ -17,6 +17,7 @@ jobs:
         with:
           configurationFile: renovate.json
           token: ${{ secrets.RENOVATE_TOKEN }}
+          autodiscover: true
         env:
           LOG_LEVEL: debug
 
