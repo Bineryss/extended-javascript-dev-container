@@ -1,17 +1,19 @@
-FROM node:20.11.1
+FROM node:22-alpine
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
+# Copy package.json and pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
 
-RUN npm install
+# Install production dependencies only
+RUN npm install -g pnpm && pnpm install --prod
 
-# Bundle app source
-COPY index.js index.js
+# Copy the compiled JavaScript files
+COPY dist ./dist
 
 
 EXPOSE 8080
 CMD [ "node", "index.js" ]
+
+USER node
