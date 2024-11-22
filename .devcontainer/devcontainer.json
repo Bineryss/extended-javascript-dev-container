@@ -7,7 +7,7 @@
 		"source=pnpm-cache,target=/home/node/.cache/pnpm,type=volume"
 	],
 	"containerEnv": {
-		"PNPM_HOME": "/home/node/.cache/pnpm"
+		"RENOVATE_TOKEN": "renovate-token"
 	},
 	"customizations": {
 		"vscode": {
