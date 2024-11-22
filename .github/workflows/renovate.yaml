@@ -4,49 +4,22 @@ on:
   schedule:
     - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
   workflow_dispatch:  # Allows manual triggering
+    inputs:
+      logLevel:
+        description: "Override default log level"
+        required: false
+        default: "info"
+        type: string
+      overrideSchedule:
+        description: "Override all schedules"
+        required: false
+        default: "false"
+        type: string
 
 jobs:
   renovate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v41.0.2
-        with:
-          configurationFile: renovate.json
-          token: ${{ secrets.RENOVATE_TOKEN }}
-        env:
-          RENOVATE_AUTODISCOVER: true
-          LOG_LEVEL: debug
-
-  auto-merge:
-    needs: renovate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: setup pnpm
-        uses: pnpm/action-setup@v4
-      - name: setup node
-        with:
-            node-version: 22
-            cache: 'pnpm'
-        uses: actions/setup-node@v4
-      - name: install dependencies
-        run: pnpm install
-
-      - name: run unit tests
-        run: pnpm run test
-
-      - name: Merge pull request
-        if: success()
-        uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_LABELS: "dependencies"
-          MERGE_METHOD: "squash"
-          MERGE_COMMIT_MESSAGE: "Auto-merge dependency update"
-          MERGE_RETRIES: "6"
-          MERGE_RETRY_SLEEP: "10000"
+    uses: Bineryss/renovate-config/.github/workflows/renovate.yaml@main
+    with:
+      logLevel: ${{ inputs.logLevel || 'info' }}
+      overrideSchedule: ${{ github.event.inputs.overrideSchedule == 'true' && '{''schedule'':null}' || '' }}
+    secrets: inherit
