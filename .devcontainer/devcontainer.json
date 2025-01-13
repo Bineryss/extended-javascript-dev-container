@@ -2,6 +2,7 @@
 	"name": "JavaScript Development Container",
 	"dockerFile": "Dockerfile",
 	"remoteUser": "node",
+	"overrideCommand": false,
 	"mounts": [
 		"source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind",
 		"source=pnpm-cache,target=/home/node/.cache/pnpm,type=volume"
@@ -21,5 +22,5 @@
 			}
 		}
 	},
-	"postCreateCommand": "sudo chown node:node /var/run/docker.sock && sudo chown node:node /home/node/.cache && pnpm config set store-dir /home/node/.cache/pnpm && pnpm install"
+	"postStartCommand": "pnpm config set store-dir /home/node/.cache/pnpm && pnpm install"
 }

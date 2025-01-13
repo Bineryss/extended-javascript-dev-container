@@ -2,11 +2,11 @@ FROM node:22
 
 # Install Docker CLI
 RUN apt-get update && apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    lsb-release \
-    sudo
+  apt-transport-https \
+  ca-certificates \
+  gnupg \
+  lsb-release \
+  sudo
 
 # Add Docker’s official GPG key and repository
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -21,10 +21,17 @@ RUN curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo b
 # Install pnpm globally
 RUN npm install -g pnpm
 
-# Allow node user to use sudo without a password
-RUN echo "node ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
 # Set up workspace directory
 WORKDIR /workspace
 
-USER node
+# Copy the entrypoint script into the container
+COPY docker-entrypoint.sh /usr/local/bin/custom-entrypoint.sh
+
+# Ensure the script is executable
+RUN chmod +x /usr/local/bin/custom-entrypoint.sh
+
+# Set it as the entrypoint
+ENTRYPOINT ["/usr/local/bin/custom-entrypoint.sh"]
+
+CMD ["sleep", "infinity"]
+# USER "node"
