@@ -1,8 +1,6 @@
 #!/bin/bash
 
 DOCKER_SOCKET=/var/run/docker.sock
-# CACHE_DIR=/home/node/.cache
-
 
 echo "Adjusting permissions for Docker socket..."
 if [ -S $DOCKER_SOCKET ]; then
@@ -25,16 +23,6 @@ if [ -S $DOCKER_SOCKET ]; then
 else
   echo "Warning: Docker socket ($DOCKER_SOCKET) not found or not a valid socket. Docker CLI may not work."
 fi
-
-# Ensure cache directory exists and adjust permissions
-# echo "Ensuring cache directory ($CACHE_DIR) exists..."
-# if [ ! -d $CACHE_DIR ]; then
-#   mkdir -p $CACHE_DIR
-#   echo "Created $CACHE_DIR"
-# fi
-
-# echo "Adjusting ownership of cache directory ($CACHE_DIR)..."
-# sudo chown -R node:node $CACHE_DIR
 
 # Execute original entrypoint or passed command(s)
 exec "$@"

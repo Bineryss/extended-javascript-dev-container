@@ -25,13 +25,11 @@ RUN npm install -g pnpm
 WORKDIR /workspace
 
 # Copy the entrypoint script into the container
-COPY docker-entrypoint.sh /usr/local/bin/custom-entrypoint.sh
-
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 # Ensure the script is executable
-RUN chmod +x /usr/local/bin/custom-entrypoint.sh
-
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Set it as the entrypoint
-ENTRYPOINT ["/usr/local/bin/custom-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
+# Keep the container alive
 CMD ["sleep", "infinity"]
-# USER "node"
