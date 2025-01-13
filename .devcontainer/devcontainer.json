@@ -5,7 +5,8 @@
 	"overrideCommand": false,
 	"mounts": [
 		"source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind",
-		"source=pnpm-cache,target=/home/node/.cache/pnpm,type=volume"
+		"source=pnpm-cache,target=/home/node/.cache/pnpm,type=volume",
+		"source=act-tasks,target=/home/node/.cache/act,type=volume"
 	],
 	"containerEnv": {
 		"RENOVATE_TOKEN": "renovate-token"

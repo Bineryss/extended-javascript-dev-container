@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DOCKER_SOCKET=/var/run/docker.sock
+CACHE_DIR=/home/node/.cache
 
 echo "Adjusting permissions for Docker socket..."
 if [ -S $DOCKER_SOCKET ]; then
@@ -23,6 +24,18 @@ if [ -S $DOCKER_SOCKET ]; then
 else
   echo "Warning: Docker socket ($DOCKER_SOCKET) not found or not a valid socket. Docker CLI may not work."
 fi
+
+# Ensure pnpm cache directory exists
+if [ ! -d $CACHE_DIR ]; then
+  mkdir -p $CACHE_DIR
+  echo "Created $CACHE_DIR"
+fi
+
+# Change ownership to 'node' user for both directories
+chown -R node:node $CACHE_DIR
+echo "Ownership of $CACHE_DIR set to 'node:node'"
+
+
 
 # Execute original entrypoint or passed command(s)
 exec "$@"
